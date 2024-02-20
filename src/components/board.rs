@@ -44,21 +44,19 @@ where
                 .map(|(token, _)| token())
                 .collect::<Vec<_>>();
 
-            log!("vals: {:?}", vals);
-            let outcome = match get_turn_outcome(&vals) {
+            match get_turn_outcome(&vals) {
                 Outcome::Draw => "Draw".to_string(),
                 Outcome::Win => format!("{} wins!", player()),
-                Outcome::Continue => format!("{}'s turn", player()),
-            };
-
-            change_turn();
-
-            outcome
+                Outcome::Continue => {
+                    change_turn();
+                    format!("{}'s turn", player())
+                }
+            }
         }
     };
 
     view! {
-        <h3>{outcome}</h3>
+        <h2>{outcome}</h2>
         <ul class="board">
             {tokens
                 .into_iter()
