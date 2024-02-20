@@ -6,7 +6,7 @@ use leptos::*;
 pub fn Home() -> impl IntoView {
     let (player, set_player) = create_signal(Token::X);
 
-    let change_turn = move |_| {
+    let change_turn = move || {
         set_player.update(|player| match player {
             Token::X => *player = Token::O,
             _ => *player = Token::X,

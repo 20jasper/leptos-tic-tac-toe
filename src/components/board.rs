@@ -26,9 +26,8 @@ impl Display for Token {
 }
 
 #[component]
-pub fn Cell<F: Fn(MouseEvent) + 'static>(
+pub fn Cell(
     current_player: ReadSignal<Token>,
-    change_turn: F,
     token: ReadSignal<Token>,
     set_token: WriteSignal<Token>,
 ) -> impl IntoView {
@@ -37,9 +36,8 @@ pub fn Cell<F: Fn(MouseEvent) + 'static>(
     view! {
         <button
             class="cell"
-            on:click=move |e| {
+            on:click=move |_| {
                 set_token(current_player());
-                change_turn(e)
             }
 
             disabled=is_disabled
@@ -54,7 +52,7 @@ pub fn Cell<F: Fn(MouseEvent) + 'static>(
 #[component]
 pub fn Board<F>(player: ReadSignal<Token>, change_turn: F) -> impl IntoView
 where
-    F: Fn(MouseEvent) + 'static + Clone + Copy,
+    F: Fn() + 'static,
 {
     let tokens = (0..9)
         .map(|_| create_signal(Token::default()))
@@ -70,12 +68,15 @@ where
                 .collect::<Vec<_>>();
 
             log!("vals: {:?}", vals);
-            let outcome = get_turn_outcome(&vals);
-            match outcome {
+            let outcome = match get_turn_outcome(&vals) {
                 Outcome::Draw => "Draw".to_string(),
                 Outcome::Win => format!("{} wins!", player()),
                 Outcome::Continue => format!("{}'s turn", player()),
-            }
+            };
+
+            change_turn();
+
+            outcome
         }
     };
 
@@ -87,7 +88,7 @@ where
                 .map(|(token, set_token)| {
                     view! {
                         <li>
-                            <Cell current_player=player change_turn token set_token/>
+                            <Cell current_player=player token set_token/>
                         </li>
                     }
                 })
