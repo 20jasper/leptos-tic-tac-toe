@@ -144,4 +144,15 @@ mod tests {
 
         assert_eq!(get_turn_outcome(board), Outcome::Win)
     }
+    #[test]
+    fn no_winner_with_incomplete_board_should_continue() {
+        let board = [
+            [Token::X, Token::O, Token::X],
+            [Token::O, Token::X, Token::O],
+            [Token::Empty, Token::Empty, Token::Empty],
+        ]
+        .flatten();
+
+        assert_eq!(get_turn_outcome(board), Outcome::Continue)
+    }
 }
