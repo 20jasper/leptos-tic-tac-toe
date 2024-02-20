@@ -34,12 +34,34 @@ pub fn get_turn_outcome(board: &[Token]) -> Outcome {
         .count();
 
     println!("count: {}", count);
-    let row_win = board.chunks(3).any(|row| {
-        row.iter()
-            .all(|t| *t != Token::Empty && t == &row[0])
-    });
+    let is_win = |tokens: &[Token]| {
+        tokens
+            .iter()
+            .all(|t| *t != Token::Empty && t == &tokens[0])
+    };
 
-    if row_win {
+    let row_win = board.chunks(3).any(is_win);
+
+    let col_win = (0..3)
+        .map(|i| [board[i], board[i + 3], board[i + 6]])
+        .any(|col| is_win(&col));
+
+    let get_diag = |start: usize, diff| {
+        (0..3)
+            .scan(start, move |state, _| {
+                let tmp = *state;
+                *state += diff;
+                Some(tmp)
+            })
+            .map(|i| board[i])
+    };
+
+    let left_diag = get_diag(0, 4).collect::<Vec<_>>();
+    let right_diag = get_diag(2, 2).collect::<Vec<_>>();
+
+    let diag_win = is_win(&left_diag) || is_win(&right_diag);
+
+    if row_win || col_win || diag_win {
         return Outcome::Win;
     }
     if count == 0 {
