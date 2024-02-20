@@ -25,10 +25,11 @@ impl Display for Token {
 #[component]
 pub fn Cell(player: ReadSignal<Token>) -> impl IntoView {
     let (token, set_token) = create_signal(Token::default());
-    let is_disabled = create_memo(move |_| !matches!(token.get(), Token::Empty));
+    let is_disabled = move || !matches!(token.get(), Token::Empty);
 
     view! {
-        <button class="cell" on:click=move |_| { set_token(player()) } disabled=is_disabled()>
+        <button class="cell" on:click=move |_| { set_token(player()) } disabled=is_disabled>
+
             "Click me: "
             {move || token.get().to_string()}
         </button>
