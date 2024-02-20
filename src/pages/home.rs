@@ -17,7 +17,7 @@ pub fn Home() -> impl IntoView {
     view! {
         <div class="container">
 
-            <h1>"it's " {move || player().to_string()} "'s turn"</h1>
+            <h1>Leptos tac toe!</h1>
 
             <Board player change_turn/>
 
