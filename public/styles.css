@@ -50,3 +50,16 @@ button {
   text-align: center;
   margin: 2rem;
 }
+
+
+.cell {
+  --cell-size: 10rem;
+  height: var(--cell-size);
+  width: var(--cell-size);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
