@@ -53,25 +53,23 @@ li {
 }
 
 .cell {
-  --cell-size: 8rem;
+  --cell-size: 6rem;
   height: var(--cell-size);
   width: var(--cell-size);
+  font-size: 1rem;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 600px) {
   .cell {
     --cell-size: 10rem;
-  }
-  .board {
-    --board-gap: 3rem;
+    font-size: 2rem;
   }
 }
 
 .board {
-  --board-gap: 1rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--board-gap);
+  gap: 1rem;
 }
 
 .board li {
