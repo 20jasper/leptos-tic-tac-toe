@@ -28,13 +28,36 @@ pub fn Cell(player: ReadSignal<Token>) -> impl IntoView {
     let is_disabled = create_memo(move |_| !matches!(token.get(), Token::Empty));
 
     view! {
-        <button
-            on:click= move |_| {
-                set_token(player())
-            }
-            disabled= is_disabled()
-        >
-            "Click me: " {move || token.get().to_string()}
-        </button>
-    }
+		<button
+			on:click=move |_| { set_token(player()) }
+
+			disabled=is_disabled()
+		>
+			"Click me: "
+			{move || token.get().to_string()}
+		</button>
+	}
+}
+
+#[component]
+pub fn Board(player: ReadSignal<Token>) -> impl IntoView {
+    view! {
+		<div class="board">
+			<div class="row">
+				<Cell player=player/>
+				<Cell player=player/>
+				<Cell player=player/>
+			</div>
+			<div class="row">
+				<Cell player=player/>
+				<Cell player=player/>
+				<Cell player=player/>
+			</div>
+			<div class="row">
+				<Cell player=player/>
+				<Cell player=player/>
+				<Cell player=player/>
+			</div>
+		</div>
+	}
 }
