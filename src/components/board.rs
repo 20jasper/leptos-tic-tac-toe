@@ -29,7 +29,7 @@ pub fn Cell(
 
 #[component]
 pub fn Board() -> impl IntoView {
-    let (player, set_player) = create_signal(Token::X);
+    let (player, set_player) = create_signal(Token::default());
 
     let change_turn = move || {
         set_player.update(|player| match player {
