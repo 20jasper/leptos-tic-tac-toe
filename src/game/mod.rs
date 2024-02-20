@@ -75,7 +75,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn no_winner_should_be_draw() {
+    fn no_winner_with_full_board_should_be_draw() {
         let board = [
             [Token::X, Token::O, Token::X],
             [Token::X, Token::O, Token::X],
@@ -99,11 +99,46 @@ mod tests {
     }
 
     #[test]
-    fn middle_row_should_win() {
+    fn middle_row_win() {
         let board = [
             [Token::Empty, Token::Empty, Token::Empty],
             [Token::O, Token::O, Token::O],
             [Token::Empty, Token::Empty, Token::Empty],
+        ]
+        .flatten();
+
+        assert_eq!(get_turn_outcome(board), Outcome::Win)
+    }
+    #[test]
+    fn left_diagonal_win() {
+        let board = [
+            [Token::X, Token::Empty, Token::Empty],
+            [Token::Empty, Token::X, Token::Empty],
+            [Token::Empty, Token::Empty, Token::X],
+        ]
+        .flatten();
+
+        assert_eq!(get_turn_outcome(board), Outcome::Win)
+    }
+
+    #[test]
+    fn right_diagonal_win() {
+        let board = [
+            [Token::Empty, Token::Empty, Token::X],
+            [Token::Empty, Token::X, Token::Empty],
+            [Token::X, Token::Empty, Token::Empty],
+        ]
+        .flatten();
+
+        assert_eq!(get_turn_outcome(board), Outcome::Win)
+    }
+
+    #[test]
+    fn vertical_win() {
+        let board = [
+            [Token::X, Token::Empty, Token::Empty],
+            [Token::X, Token::Empty, Token::Empty],
+            [Token::X, Token::Empty, Token::Empty],
         ]
         .flatten();
 
