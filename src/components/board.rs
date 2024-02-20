@@ -21,8 +21,8 @@ pub fn Cell(
             disabled=is_disabled
         >
             {move || match token() {
-                Token::Empty => "Play here".to_string(),
-                _ => token().to_string(),
+                Token::Empty => (!is_disabled()).then_some("Play here".to_string()),
+                _ => Some(token().to_string()),
             }}
 
         </button>
