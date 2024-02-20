@@ -13,7 +13,7 @@ impl Display for Token {
         let s = match self {
             Token::X => "X",
             Token::O => "O",
-            Token::Empty => "Empty",
+            Token::Empty => "",
         };
 
         write!(f, "{}", s)
