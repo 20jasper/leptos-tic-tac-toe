@@ -28,10 +28,15 @@ pub fn Cell(
 }
 
 #[component]
-pub fn Board<F>(player: ReadSignal<Token>, change_turn: F) -> impl IntoView
-where
-    F: Fn() + 'static,
-{
+pub fn Board() -> impl IntoView {
+    let (player, set_player) = create_signal(Token::X);
+
+    let change_turn = move || {
+        set_player.update(|player| match player {
+            Token::X => *player = Token::O,
+            _ => *player = Token::X,
+        })
+    };
     let tokens = (0..9)
         .map(|_| create_signal(Token::default()))
         .collect::<Vec<_>>();
