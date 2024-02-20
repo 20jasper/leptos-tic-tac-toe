@@ -37,17 +37,15 @@ pub fn Cell(player: ReadSignal<Token>) -> impl IntoView {
 
 #[component]
 pub fn Board(player: ReadSignal<Token>) -> impl IntoView {
-    view! {
-        <div class="board">
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-            <Cell player=player/>
-        </div>
-    }
+    let cells = (0..9)
+        .map(|_| {
+            view! {
+                <li>
+                    <Cell player=player/>
+                </li>
+            }
+        })
+        .collect_view();
+
+    view! { <ul class="board">{cells}</ul> }
 }
