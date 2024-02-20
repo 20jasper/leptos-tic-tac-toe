@@ -1,9 +1,11 @@
+use crate::components::board::{Cell, Token};
 use crate::components::counter_btn::Button;
 use leptos::*;
 
 /// Default Home Page
 #[component]
 pub fn Home() -> impl IntoView {
+    let (player, set_player) = create_signal(Token::X);
     view! {
         <div class="container">
 
@@ -12,11 +14,19 @@ pub fn Home() -> impl IntoView {
                 <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo" height="200" width="400"/>
             </picture>
 
-            <h1>"Welcome to Leptos"</h1>
+            <h1>"it's "{move || player.get().to_string()}"'s turn"</h1>
 
             <div class="buttons">
-                <Button />
-                <Button increment=5 />
+                <button on:click= move|_|match player.get() {
+                    Token::X => set_player(Token::O),
+                    _ => set_player(Token::X),
+                }
+
+                >change player</button>
+                <Cell player=player />
+                <Cell player=player />
+                <Cell player=player />
+                <Cell player=player />
             </div>
 
         </div>
