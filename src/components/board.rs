@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use leptos::*;
+use web_sys::MouseEvent;
 
 #[derive(Debug, Clone, Default, Copy)]
 pub enum Token {
@@ -23,15 +24,24 @@ impl Display for Token {
 }
 
 #[component]
-pub fn Cell(
+pub fn Cell<F: Fn(MouseEvent) + 'static>(
     current_player: ReadSignal<Token>,
+    change_turn: F,
     token: ReadSignal<Token>,
     set_token: WriteSignal<Token>,
 ) -> impl IntoView {
     let is_disabled = move || !matches!(token(), Token::Empty);
 
     view! {
-        <button class="cell" on:click=move |_| { set_token(current_player()) } disabled=is_disabled>
+        <button
+            class="cell"
+            on:click=move |e| {
+                set_token(current_player());
+                change_turn(e)
+            }
+
+            disabled=is_disabled
+        >
 
             "Click me: "
             {move || token().to_string()}
@@ -40,7 +50,10 @@ pub fn Cell(
 }
 
 #[component]
-pub fn Board(player: ReadSignal<Token>) -> impl IntoView {
+pub fn Board<F>(player: ReadSignal<Token>, change_turn: F) -> impl IntoView
+where
+    F: Fn(MouseEvent) + 'static + Clone + Copy,
+{
     let tokens = (0..9)
         .map(|_| create_signal(Token::default()))
         .collect::<Vec<_>>();
@@ -57,14 +70,14 @@ pub fn Board(player: ReadSignal<Token>) -> impl IntoView {
     };
 
     view! {
-        <h1>{count}</h1>
+        <h3>{count}</h3>
         <ul class="board">
             {tokens
                 .into_iter()
                 .map(|(token, set_token)| {
                     view! {
                         <li>
-                            <Cell current_player=player token set_token/>
+                            <Cell current_player=player change_turn token set_token/>
                         </li>
                     }
                 })
