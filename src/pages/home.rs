@@ -1,4 +1,5 @@
-use crate::components::board::{Board, Token};
+use crate::components::board::Board;
+use crate::game::Token;
 use leptos::*;
 
 /// Default Home Page

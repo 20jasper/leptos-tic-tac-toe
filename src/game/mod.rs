@@ -1,4 +1,24 @@
-use crate::components::board::Token;
+use std::fmt::Display;
+
+#[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+pub enum Token {
+    X,
+    O,
+    #[default]
+    Empty,
+}
+
+impl Display for Token {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Token::X => "X",
+            Token::O => "O",
+            Token::Empty => "Empty",
+        };
+
+        write!(f, "{}", s)
+    }
+}
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Outcome {
