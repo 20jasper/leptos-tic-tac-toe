@@ -8,16 +8,16 @@ pub fn Home() -> impl IntoView {
     view! {
         <div class="container">
 
-            <h1>"it's " {move || player.get().to_string()} "'s turn"</h1>
+            <h1>"it's " {move || player().to_string()} "'s turn"</h1>
 
-            <button on:click=move |_| match player.get() {
+            <button on:click=move |_| match player() {
                 Token::X => set_player(Token::O),
                 _ => set_player(Token::X),
             }>
 
                 change player
             </button>
-            <Board player=player/>
+            <Board player/>
 
         </div>
     }
