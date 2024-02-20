@@ -1,9 +1,11 @@
 use std::fmt::Display;
 
-use leptos::*;
+use leptos::{logging::log, *};
 use web_sys::MouseEvent;
 
-#[derive(Debug, Clone, Default, Copy)]
+use crate::game::{get_turn_outcome, Outcome};
+
+#[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
 pub enum Token {
     X,
     O,
@@ -58,19 +60,27 @@ where
         .map(|_| create_signal(Token::default()))
         .collect::<Vec<_>>();
 
-    let count = {
+    let outcome = {
         let tokens = tokens.clone();
 
         move || {
-            tokens
+            let vals = tokens
                 .iter()
-                .filter(|(token, _)| matches!(token(), Token::Empty))
-                .count()
+                .map(|(token, _)| token())
+                .collect::<Vec<_>>();
+
+            log!("vals: {:?}", vals);
+            let outcome = get_turn_outcome(&vals);
+            match outcome {
+                Outcome::Draw => "Draw".to_string(),
+                Outcome::Win => format!("{} wins!", player()),
+                Outcome::Continue => format!("{}'s turn", player()),
+            }
         }
     };
 
     view! {
-        <h3>{count}</h3>
+        <h3>{outcome}</h3>
         <ul class="board">
             {tokens
                 .into_iter()
